@@ -4,15 +4,6 @@
   <title>Why Did My Property Taxes Go Up? - Wyandotte County</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
   <style>
-    .impact-list ul {
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-.impact-list li strong {
-  color: #2b6cb0;
-}
-    /* [Previous styles remain the same until .results] */
-    
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       line-height: 1.6;
@@ -45,11 +36,17 @@
       font-size: 1.2em;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    .big-message span {
-      font-size: 1.5em;
-      font-weight: bold;
-      display: block;
-      margin: 10px 0;
+    .impact-box {
+      background: #fff5f5;
+      border-left: 4px solid #fc8181;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 0 12px 12px 0;
+    }
+    .impact-item {
+      margin: 15px 0;
+      padding-left: 20px;
+      border-left: 3px solid #fc8181;
     }
     .calculator {
       background: #ebf4ff;
@@ -60,6 +57,14 @@
     }
     .form-group {
       margin-bottom: 25px;
+    }
+    .highlight-box {
+      background: #fed7aa;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      text-align: center;
+      font-size: 1.1em;
     }
     label {
       display: block;
@@ -126,14 +131,6 @@
       border-radius: 8px;
       margin: 10px 0;
     }
-    .highlight-box {
-      background: #fed7aa;
-      padding: 20px;
-      border-radius: 8px;
-      margin: 20px 0;
-      text-align: center;
-      font-size: 1.1em;
-    }
     .warning-note {
       background: #fff5f5;
       border-left: 4px solid #fc8181;
@@ -155,82 +152,46 @@
       color: #718096;
     }
   </style>
-  .impact-list {
-  background: #f7fafc;
-  padding: 15px 20px;
-  border-radius: 8px;
-  margin: 10px 0;
-}
-.impact-list li {
-  margin-bottom: 8px;
-}
 </head>
 <body>
   <div class="container">
-    <div class="big-message" style="background: #f7fafc; color: #2d3748;">
-  <strong>Important Update for 2025:</strong>
-  <p>Wyandotte County has chosen "revenue neutral" for 2025:</p>
-  <div class="impact-list">
-    <li><strong>Tax Rates Will Drop:</strong>
-      <ul>
-        <li>City rate: from 38.460 to 34.293 (down 4.167 mills)</li>
-        <li>County rate: from 37.313 to 33.311 (down 4.002 mills)</li>
-      </ul>
-    </li>
-    <li><strong>BUT: Your Total Tax Bill Could Still Go Up</strong> if your property value increased</li>
-    <li>To maintain these lower rates, services will be cut:
-      <ul>
-        <li>Less road maintenance (mostly just pothole filling)</li>
-        <li>Reduced funding for police, fire, and sheriff</li>
-        <li>Cuts to neighborhood services</li>
-      </ul>
-    </li>
-  </div>
-  <p style="font-size: 0.9em; margin-top: 15px; font-style: italic;">
-    Remember: A lower tax RATE doesn't always mean a lower tax BILL - it depends on your property value
-  </p>
-</div>
-  <div class="big-message" style="background: #f7fafc; color: #2d3748;">
-  <strong>Important Update for 2025:</strong>
-  <p>Wyandotte County has chosen "revenue neutral" for 2025:</p>
-  <div class="impact-list">
-    <li><strong>Tax Rates Will Drop:</strong>
-      <ul>
-        <li>City rate: from 38.460 to 34.293 (down 4.167 mills)</li>
-        <li>County rate: from 37.313 to 33.311 (down 4.002 mills)</li>
-      </ul>
-    </li>
-    <li><strong>BUT: Your Total Tax Bill Could Still Go Up</strong> if your property value increased</li>
-    <li>To maintain these lower rates, services will be cut:
-      <ul>
-        <li>Less road maintenance (mostly just pothole filling)</li>
-        <li>Reduced funding for police, fire, and sheriff</li>
-        <li>Cuts to neighborhood services</li>
-      </ul>
-    </li>
-  </div>
-  <p style="font-size: 0.9em; margin-top: 15px; font-style: italic;">
-    Remember: A lower tax RATE doesn't always mean a lower tax BILL - it depends on your property value
-  </p>
-</div>
-</div>
     <h1>Why Did My Property Taxes Go Up? 📈</h1>
-    <div class="big-message" style="background: #f7fafc; color: #2d3748;">
-  <strong>Important Update for 2025:</strong>
-  <p>Wyandotte County has chosen "revenue neutral" for 2025. What this means:</p>
-  <div class="impact-list">
-    <li>Your tax rate will go down, but so will county services</li>
-    <li>Less road maintenance (mostly just pothole filling)</li>
-    <li>Reduced funding for police, fire, and sheriff</li>
-    <li>Cuts to neighborhood services</li>
-  </div>
-</div>
+    
+    <div class="impact-box">
+      <h2 style="color: #c53030; margin-top: 0;">What "Revenue Neutral" Really Means For You:</h2>
+      
+      <div class="impact-item">
+        <strong>When You Call 911:</strong>
+        <br>Longer response times - Police & Fire departments face millions in cuts
+      </div>
+      
+      <div class="impact-item">
+        <strong>Your Streets and Sidewalks:</strong>
+        <br>Only emergency pothole fixes - No more regular road maintenance
+      </div>
+      
+      <div class="impact-item">
+        <strong>Your Neighborhood:</strong>
+        <br>Half the funding for neighborhood improvements
+        <br>No more home repair assistance program
+        <br>Less frequent mowing of vacant lots
+      </div>
+
+      <div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin-top: 20px;">
+        <strong>Tax Rates ARE Going Down:</strong>
+        <ul>
+          <li>City rate drops from 38.460 to 34.293</li>
+          <li>County rate drops from 37.313 to 33.311</li>
+        </ul>
+        <strong>BUT:</strong> If your home value went up, you'll likely still pay more
+      </div>
+    </div>
+
     <div class="big-message">
       The Key Thing to Know:
       <span>Home Values Went Up 46%</span>
       While Tax Rates Actually Went DOWN 1.85%
     </div>
-
     <div class="highlight-box">
       For example, a typical Wyandotte County home:<br>
       2020: Worth $117,422<br>
@@ -281,27 +242,31 @@
         <div id="monthlyResults"></div>
       </div>
     </div>
-
     <div class="warning-note">
-      <strong>Note:</strong> This calculator shows base property taxes only. Your actual bill may include:
+      <strong>Important Notes:</strong> 
       <ul>
-        <li>Special assessments</li>
-        <li>Drainage district fees (if applicable)</li>
-        <li>Other local fees or assessments</li>
+        <li>This calculator shows base property taxes only</li>
+        <li>Your actual bill may include:
+          <ul>
+            <li>Special assessments</li>
+            <li>Drainage district fees</li>
+            <li>Other local fees</li>
+          </ul>
+        </li>
+        <li>2025 changes are based on approved county budget</li>
+        <li>Check your tax bill or contact the county for exact amounts</li>
       </ul>
-      Check your tax bill or contact the county for specific details about your property.
     </div>
 
     <div class="source">
-      Data from:
+      Sources:
       <ul>
         <li>Home values: Zillow.com (Wyandotte County median)</li>
-        <li>Tax rates: Official Wyandotte County Tax Levy Documents 2020 and 2023</li>
-        <li>All rates verified from official county documents</li>
+        <li>Tax rates: Official Wyandotte County Tax Levy Documents</li>
+        <li>Service impacts: 2025 UG Approved Budget</li>
       </ul>
     </div>
   </div>
-
   <script>
     const rates = {
       'kck500': { 2020: 167.544406, 2023: 164.438579, name: 'Kansas City KS (USD 500)' },
