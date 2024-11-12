@@ -60,6 +60,13 @@
       border-radius: 8px;
       margin: 20px 0;
     }
+    .rate-info {
+      background: #fff3e0;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      border: 1px solid #ffe0b2;
+    }
     .btn {
       background: #2b6cb0;
       color: white;
@@ -85,12 +92,12 @@
     <h1>Wyandotte County Property Tax Calculator</h1>
     
     <div class="example-box">
-      <h3>For Example:</h3>
-      <p>A typical Wyandotte County home:</p>
+      <h3>County-Wide Example:</h3>
+      <p>The median Wyandotte County home:</p>
       <ul>
         <li>2020 Value: $117,422</li>
-        <li>2023 Value: $171,582</li>
-        <li>This reflects the county-wide median values from Zillow</li>
+        <li>2023 Value: $171,582 (46% increase)</li>
+        <li>This reflects county-wide median values from Zillow</li>
         <li>Your specific home's value change may be different!</li>
       </ul>
     </div>
@@ -99,7 +106,8 @@
       <h2>Calculate Your Taxes</h2>
       
       <div class="form-group">
-        <label>Select your area's tax rate:</label>
+        <label>Select your area:</label>
+        <select id="taxRate" onchange="updateRate()">
           <option value="kck500">Kansas City KS (USD 500) - Most common</option>
           <option value="kck202">Kansas City KS (USD 202)</option>
           <option value="kck203">Kansas City KS (USD 203)</option>
@@ -109,6 +117,10 @@
           <option value="lakequivira">Lake Quivira</option>
         </select>
         <p class="note">Not sure? Check your tax bill or property tax statement</p>
+      </div>
+
+      <div id="rateInfo" class="rate-info">
+        Loading tax rates...
       </div>
 
       <div class="form-group">
@@ -143,14 +155,28 @@
   <script>
     // Tax rates for different areas
     const rates = {
-      'kck500': { 2020: 167.544406, 2023: 164.438579 },
-      'kck202': { 2020: 173.761361, 2023: 170.733416 },
-      'kck203': { 2020: 170.061285, 2023: 166.270000 },
-      'kck204': { 2020: 167.492878, 2023: 164.853259 },
-      'bonner': { 2020: 167.492878, 2023: 158.340104 },
-      'edwardsville': { 2020: 178.592377, 2023: 164.853259 },
-      'lakequivira': { 2020: 152.518099, 2023: 151.692548 }
+      'kck500': { 2020: 167.544406, 2023: 164.438579, name: 'Kansas City KS (USD 500)' },
+      'kck202': { 2020: 173.761361, 2023: 170.733416, name: 'Kansas City KS (USD 202)' },
+      'kck203': { 2020: 170.061285, 2023: 166.270000, name: 'Kansas City KS (USD 203)' },
+      'kck204': { 2020: 167.492878, 2023: 164.853259, name: 'Kansas City KS (USD 204)' },
+      'bonner': { 2020: 167.492878, 2023: 158.340104, name: 'Bonner Springs' },
+      'edwardsville': { 2020: 178.592377, 2023: 164.853259, name: 'Edwardsville' },
+      'lakequivira': { 2020: 152.518099, 2023: 151.692548, name: 'Lake Quivira' }
     };
+
+    function updateRate() {
+      const area = document.getElementById('taxRate').value;
+      const rate2020 = rates[area][2020];
+      const rate2023 = rates[area][2023];
+      const rateChange = ((rate2023 - rate2020) / rate2020 * 100).toFixed(2);
+      
+      document.getElementById('rateInfo').innerHTML = `
+        <strong>${rates[area].name} Tax Rates:</strong><br>
+        2020 Rate: ${rate2020.toFixed(6)}<br>
+        2023 Rate: ${rate2023.toFixed(6)}<br>
+        Rate Change: ${rateChange}%
+      `;
+    }
 
     function calculateTax() {
       const value2020 = parseFloat(document.getElementById('value2020').value);
@@ -187,6 +213,9 @@
         <p>• Your Area's Tax Rate: ${rateChange}%</p>
       `;
     }
+
+    // Initialize rate display
+    updateRate();
   </script>
 </body>
 </html>
