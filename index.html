@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wyandotte County Property Tax Calculator - All Districts</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      background-color: #f0f4f8;
+      color: #2d3748;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1, h2, h3 {
+      color: #2b6cb0;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .calculator {
+      background: #ebf4ff;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    select, input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #cbd5e0;
+      border-radius: 6px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .result-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .highlight {
+      font-weight: bold;
+      color: #2b6cb0;
+    }
+    .rate-info {
+      background: #e6ffed;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+    .chart-container {
+      margin: 30px 0;
+      height: 400px;
+    }
+    .btn {
+      background: #2b6cb0;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+    .btn:hover {
+      background: #2c5282;
+    }
+    .source {
+      font-size: 0.9em;
+      color: #718096;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Wyandotte County Property Tax Calculator</h1>
+    
+    <div class="calculator">
+      <h2>Enter Your Property Details</h2>
+      
+      <div class="form-group">
+        <label>Select your city:</label>
+        <select id="city" onchange="updateDistricts()">
+          <option value="kck">Kansas City, KS</option>
+          <option value="bonner">Bonner Springs</option>
+          <option value="edwardsville">Edwardsville</option>
+          <option value="lakequivira">Lake Quivira</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Select your school district:</label>
+        <select id="schoolDistrict" onchange="updateRate()">
+          <option value="500">USD #500</option>
+          <option value="202">USD #202</option>
+          <option value="203">USD #203</option>
+          <option value="204">USD #204</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Special districts (if applicable):</label>
+        <div>
+          <input type="checkbox" id="kawValley" onchange="updateRate()">
+          <label for="kawValley">Kaw Valley Drainage</label>
+        </div>
+        <div>
+          <input type="checkbox" id="fairfax" onchange="updateRate()">
+          <label for="fairfax">Fairfax Drainage</label>
+        </div>
+        <div>
+          <input type="checkbox" id="wolcott" onchange="updateRate()">
+          <label for="wolcott">Wolcott Drainage</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Enter your home's 2020 value:</label>
+        <input type="number" id="homeValue" value="117422" placeholder="Enter home value">
+      </div>
+
+      <div class="rate-info" id="rateInfo">
+        Your tax rate will appear here...
+      </div>
+
+      <button class="btn" onclick="calculateTax()">Calculate My Tax</button>
+    </div>
+
+    <div id="results" class="result-box" style="display: none;">
+      <h3>Your Property Tax Analysis</h3>
+      <div id="taxResults"></div>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="taxChart"></canvas>
+    </div>
+
+    <div class="source">
+      <p><strong>Notes:</strong></p>
+      <ul>
+        <li>Home value data from Zillow shows approximately 46% increase from 2020 to 2023</li>
+        <li>Tax rates sourced from official Wyandotte County Tax Levy documents</li>
+        <li>Different areas have different rates based on city, school district, and special districts</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Tax rate data
+    const taxRates = {
+      '2020': {
+        'kck': {
+          'base': {
+            '500': 167.544406,
+            '202': 173.761361,
+            '203': 170.061285,
+            '204': 167.492878
+          },
+          'special': {
+            'kawValley': 13.284493,
+            'fairfax': 19.566977,
+            'wolcott': 3.189010
+          }
+        },
+        'bonner': {
+          'base': {
+            '204': 167.492878
+          }
+        },
+        'edwardsville': {
+          'base': {
+            '204': 178.592377
+          }
+        },
+        'lakequivira': {
+          'base': {
+            '202': 152.518099
+          }
+        }
+      },
+      '2023': {
+        'kck': {
+          'base': {
+            '500': 164.438579,
+            '202': 170.733416,
+            '203': 166.270000,
+            '204': 164.853259
+          },
+          'special': {
+            'kawValley': 9.129000,
+            'fairfax': 20.558000,
+            'wolcott': 2.470000
+          }
+        },
+        'bonner': {
+          'base': {
+            '204': 158.340104
+          }
+        },
+        'edwardsville': {
+          'base': {
+            '204': 164.853259
+          }
+        },
+        'lakequivira': {
+          'base': {
+            '202': 151.692548
+          }
+        }
+      }
+    };
+
+    let chart = null;
+
+    function updateDistricts() {
+      const city = document.getElementById('city').value;
+      const schoolSelect = document.getElementById('schoolDistrict');
+      const kawValley = document.getElementById('kawValley');
+      const fairfax = document.getElementById('fairfax');
+      const wolcott = document.getElementById('wolcott');
+      
+      // Reset special districts
+      kawValley.checked = false;
+      fairfax.checked = false;
+      wolcott.checked = false;
+
+      // Update available school districts based on city
+      schoolSelect.innerHTML = '';
+      if (city === 'kck') {
+        ['500', '202', '203', '204'].forEach(dist => {
+          const opt = new Option(`USD #${dist}`, dist);
+          schoolSelect.add(opt);
+        });
+        // Enable special districts
+        kawValley.disabled = false;
+        fairfax.disabled = false;
+        wolcott.disabled = false;
+      } else if (city === 'bonner' || city === 'edwardsville') {
+        schoolSelect.add(new Option('USD #204', '204'));
+        // Disable special districts
+        kawValley.disabled = true;
+        fairfax.disabled = true;
+        wolcott.disabled = true;
+      } else if (city === 'lakequivira') {
+        schoolSelect.add(new Option('USD #202', '202'));
+        // Disable special districts
+        kawValley.disabled = true;
+        fairfax.disabled = true;
+        wolcott.disabled = true;
+      }
+      
+      updateRate();
+    }
+
+    function getEffectiveRate(year) {
+      const city = document.getElementById('city').value;
+      const district = document.getElementById('schoolDistrict').value;
+      let rate = taxRates[year][city]['base'][district];
+
+      if (city === 'kck') {
+        if (document.getElementById('kawValley').checked) {
+          rate += taxRates[year][city]['special']['kawValley'];
+        }
+        if (document.getElementById('fairfax').checked) {
+          rate += taxRates[year][city]['special']['fairfax'];
+        }
+        if (document.getElementById('wolcott').checked) {
+          rate += taxRates[year][city]['special']['wolcott'];
+        }
+      }
+
+      return rate;
+    }
+
+    function updateRate() {
+      const rate2020 = getEffectiveRate('2020');
+      const rate2023 = getEffectiveRate('2023');
+      const rateChange = ((rate2023 - rate2020) / rate2020 * 100).toFixed(2);
+      
+      document.getElementById('rateInfo').innerHTML = `
+        <strong>Your Tax Rates:</strong><br>
+        2020: ${rate2020.toFixed(6)}<br>
+        2023: ${rate2023.toFixed(6)}<br>
+        Rate Change: ${rateChange}%
+      `;
+    }
+
+    function calculateTax() {
+      const homeValue = parseFloat(document.getElementById('homeValue').value);
+      const valueIncrease = 0.46; // 46% increase from 2020 to 2023
+      const rate2020 = getEffectiveRate('2020');
+      const rate2023 = getEffectiveRate('2023');
+
+      // Calculate taxes
+      const tax2020 = (homeValue * rate2020 / 1000).toFixed(2);
+      const tax2023IfOnlyValueChanged = (homeValue * (1 + valueIncrease) * rate2020 / 1000).toFixed(2);
+      const tax2023Actual = (homeValue * (1 + valueIncrease) * rate2023 / 1000).toFixed(2);
+
+      // Display results
+      const resultsDiv = document.getElementById('results');
+      const taxResults = document.getElementById('taxResults');
+      resultsDiv.style.display = 'block';
+
+      const valueChange = (valueIncrease * 100).toFixed(1);
+      const rateChange = ((rate2023 - rate2020) / rate2020 * 100).toFixed(2);
+
+      taxResults.innerHTML = `
+        <p>📊 <strong>Your Property Tax Analysis:</strong></p>
+        <p>2020 Tax: $${tax2020}</p>
+        <p>2023 Tax: $${tax2023Actual}</p>
+        <p class="highlight">Total Change: $${(tax2023Actual - tax2020).toFixed(2)}</p>
+        <p>📈 Home Value Change: +${valueChange}%</p>
+        <p>📋 Tax Rate Change: ${rateChange}%</p>
+      `;
+
+      updateChart(tax2020, tax2023IfOnlyValueChanged, tax2023Actual);
+    }
+
+    function updateChart(tax2020, tax2023Value, tax2023Actual) {
+      if (chart) {
+        chart.destroy();
+      }
+
+      const ctx = document.getElementById('taxChart').getContext('2d');
+      chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['2020', '2023'],
+          datasets: [{
+            label: 'Property Tax ($)',
+            backgroundColor: ['#2b6cb0', '#48bb78'],
+            data: [tax2020, tax2023Actual]
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Your Property Tax Change'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    // Initialize the form
+    updateDistricts();
+    updateRate();
+    calculateTax();
+  </script>
+</body>
+</html>
