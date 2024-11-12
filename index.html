@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Wyandotte County Property Tax Calculator</title>
+  <title>Why Did My Property Taxes Go Up? - Wyandotte County</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
   <style>
+    /* [Previous styles remain the same until .results] */
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       line-height: 1.6;
@@ -17,73 +18,133 @@
       margin: 0 auto;
       background: white;
       padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     h1 {
       color: #2b6cb0;
       text-align: center;
       margin-bottom: 30px;
+      font-size: 2.2em;
+    }
+    .big-message {
+      background: #4299e1;
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      margin: 20px 0;
+      font-size: 1.2em;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .big-message span {
+      font-size: 1.5em;
+      font-weight: bold;
+      display: block;
+      margin: 10px 0;
     }
     .calculator {
       background: #ebf4ff;
-      padding: 20px;
-      border-radius: 8px;
+      padding: 25px;
+      border-radius: 12px;
       margin: 20px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
     label {
       display: block;
       margin-bottom: 8px;
-      font-weight: 500;
+      font-weight: 600;
+      color: #2d3748;
+      font-size: 1.1em;
     }
     select, input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       border: 2px solid #cbd5e0;
-      border-radius: 6px;
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-    .result-box {
-      background: white;
-      padding: 20px;
       border-radius: 8px;
-      margin: 20px 0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      font-size: 1.1em;
+      margin-bottom: 8px;
+      transition: border-color 0.2s;
     }
-    .example-box {
-      background: #e6ffed;
-      padding: 15px;
-      border-radius: 8px;
-      margin: 20px 0;
+    select:focus, input:focus {
+      border-color: #4299e1;
+      outline: none;
     }
     .rate-info {
-      background: #fff3e0;
+      background: #fff;
       padding: 15px;
       border-radius: 8px;
       margin: 10px 0;
-      border: 1px solid #ffe0b2;
+      border: 2px solid #e2e8f0;
     }
     .btn {
-      background: #2b6cb0;
+      background: #48bb78;
       color: white;
-      padding: 10px 20px;
+      padding: 15px 25px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 1.2em;
       width: 100%;
+      font-weight: bold;
+      transition: background-color 0.2s;
     }
     .btn:hover {
-      background: #2c5282;
+      background: #38a169;
+    }
+    .results {
+      background: #f7fafc;
+      padding: 25px;
+      border-radius: 12px;
+      margin: 20px 0;
+      border: 2px solid #e2e8f0;
+    }
+    .monthly-box {
+      background: #c6f6d5;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .monthly-payment {
+      font-size: 1.4em;
+      font-weight: bold;
+      color: #2b6cb0;
+      text-align: center;
+      padding: 15px;
+      background: white;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+    .highlight-box {
+      background: #fed7aa;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      text-align: center;
+      font-size: 1.1em;
+    }
+    .warning-note {
+      background: #fff5f5;
+      border-left: 4px solid #fc8181;
+      padding: 15px;
+      margin: 20px 0;
+      font-size: 0.9em;
+      color: #c53030;
     }
     .note {
       font-size: 0.9em;
       color: #718096;
-      font-style: italic;
+      margin-top: 5px;
+    }
+    .source {
+      border-top: 2px solid #e2e8f0;
+      margin-top: 30px;
+      padding-top: 20px;
+      font-size: 0.9em;
+      color: #718096;
     }
   </style>
   .impact-list {
@@ -108,24 +169,35 @@
     <li>Cuts to neighborhood services</li>
   </div>
 </div>
-    <h1>Wyandotte County Property Tax Calculator</h1>
-    
-    <div class="example-box">
-      <h3>County-Wide Example:</h3>
-      <p>The median Wyandotte County home:</p>
-      <ul>
-        <li>2020 Value: $117,422</li>
-        <li>2023 Value: $171,582 (46% increase)</li>
-        <li>This reflects county-wide median values from Zillow</li>
-        <li>Your specific home's value change may be different!</li>
-      </ul>
+    <h1>Why Did My Property Taxes Go Up? 📈</h1>
+    <div class="big-message" style="background: #f7fafc; color: #2d3748;">
+  <strong>Important Update for 2025:</strong>
+  <p>Wyandotte County has chosen "revenue neutral" for 2025. What this means:</p>
+  <div class="impact-list">
+    <li>Your tax rate will go down, but so will county services</li>
+    <li>Less road maintenance (mostly just pothole filling)</li>
+    <li>Reduced funding for police, fire, and sheriff</li>
+    <li>Cuts to neighborhood services</li>
+  </div>
+</div>
+    <div class="big-message">
+      The Key Thing to Know:
+      <span>Home Values Went Up 46%</span>
+      While Tax Rates Actually Went DOWN 1.85%
+    </div>
+
+    <div class="highlight-box">
+      For example, a typical Wyandotte County home:<br>
+      2020: Worth $117,422<br>
+      2023: Worth $171,582<br>
+      <strong>That's a $54,160 increase in value!</strong>
     </div>
 
     <div class="calculator">
-      <h2>Calculate Your Taxes</h2>
+      <h2>Calculate Your Change:</h2>
       
       <div class="form-group">
-        <label>Select your area:</label>
+        <label>1. Pick your area's tax rate:</label>
         <select id="taxRate" onchange="updateRate()">
           <option value="kck500">Kansas City KS (USD 500) - Most common</option>
           <option value="kck202">Kansas City KS (USD 202)</option>
@@ -135,44 +207,57 @@
           <option value="edwardsville">Edwardsville</option>
           <option value="lakequivira">Lake Quivira</option>
         </select>
-        <p class="note">Not sure? Check your tax bill or property tax statement</p>
+        <p class="note">Find this on your tax bill or call the county</p>
       </div>
 
       <div id="rateInfo" class="rate-info">
-        Loading tax rates...
       </div>
 
       <div class="form-group">
-        <label>Your Home's 2020 Value:</label>
-        <input type="number" id="value2020" placeholder="Enter 2020 value">
+        <label>2. Your Home's 2020 Value:</label>
+        <input type="number" id="value2020" placeholder="Enter your 2020 home value">
       </div>
 
       <div class="form-group">
-        <label>Your Home's 2023 Value:</label>
-        <input type="number" id="value2023" placeholder="Enter 2023 value">
-        <p class="note">Can be from recent appraisal, sale, or county assessment</p>
+        <label>3. Your Home's 2023 Value:</label>
+        <input type="number" id="value2023" placeholder="Enter your 2023 home value">
+        <p class="note">Use your most recent county assessment or appraisal</p>
       </div>
 
-      <button class="btn" onclick="calculateTax()">Calculate</button>
+      <button class="btn" onclick="calculateTax()">Show Me What Happened</button>
     </div>
 
-    <div id="results" class="result-box" style="display: none;">
-      <h3>Your Property Tax Analysis</h3>
+    <div id="results" class="results" style="display: none">
+      <h3>Here's What Changed:</h3>
       <div id="taxResults"></div>
+      
+      <div class="monthly-box">
+        <h3>Monthly Payment Breakdown:</h3>
+        <div id="monthlyResults"></div>
+      </div>
     </div>
 
-    <div class="note">
-      <p><strong>Sources:</strong></p>
+    <div class="warning-note">
+      <strong>Note:</strong> This calculator shows base property taxes only. Your actual bill may include:
       <ul>
-        <li>County-wide home values: Zillow.com Wyandotte County Home Values</li>
-        <li>Tax rates: Wyandotte County Tax Levy Documents 2020-2023</li>
-        <li>Note: Your specific property value changes may differ significantly from county-wide averages</li>
+        <li>Special assessments</li>
+        <li>Drainage district fees (if applicable)</li>
+        <li>Other local fees or assessments</li>
+      </ul>
+      Check your tax bill or contact the county for specific details about your property.
+    </div>
+
+    <div class="source">
+      Data from:
+      <ul>
+        <li>Home values: Zillow.com (Wyandotte County median)</li>
+        <li>Tax rates: Official Wyandotte County Tax Levy Documents 2020 and 2023</li>
+        <li>All rates verified from official county documents</li>
       </ul>
     </div>
   </div>
 
   <script>
-    // Tax rates for different areas
     const rates = {
       'kck500': { 2020: 167.544406, 2023: 164.438579, name: 'Kansas City KS (USD 500)' },
       'kck202': { 2020: 173.761361, 2023: 170.733416, name: 'Kansas City KS (USD 202)' },
@@ -190,10 +275,8 @@
       const rateChange = ((rate2023 - rate2020) / rate2020 * 100).toFixed(2);
       
       document.getElementById('rateInfo').innerHTML = `
-        <strong>${rates[area].name} Tax Rates:</strong><br>
-        2020 Rate: ${rate2020.toFixed(6)}<br>
-        2023 Rate: ${rate2023.toFixed(6)}<br>
-        Rate Change: ${rateChange}%
+        <strong>${rates[area].name}:</strong><br>
+        Your tax rate actually went ${rateChange < 0 ? 'DOWN' : 'UP'} by ${Math.abs(rateChange)}%
       `;
     }
 
@@ -203,7 +286,7 @@
       const area = document.getElementById('taxRate').value;
       
       if (!value2020 || !value2023) {
-        alert('Please enter both 2020 and 2023 home values');
+        alert('Please enter both your 2020 and 2023 home values');
         return;
       }
 
@@ -212,24 +295,49 @@
 
       const tax2020 = (value2020 * rate2020 / 1000).toFixed(2);
       const tax2023 = (value2023 * rate2023 / 1000).toFixed(2);
+      
+      const monthly2020 = (parseFloat(tax2020) / 12).toFixed(2);
+      const monthly2023 = (parseFloat(tax2023) / 12).toFixed(2);
+      const monthlyChange = (monthly2023 - monthly2020).toFixed(2);
 
       const valueChange = ((value2023 - value2020) / value2020 * 100).toFixed(1);
       const rateChange = ((rate2023 - rate2020) / rate2020 * 100).toFixed(2);
-      const taxChange = ((tax2023 - tax2020) / tax2020 * 100).toFixed(1);
 
       const results = document.getElementById('results');
       const taxResults = document.getElementById('taxResults');
+      const monthlyResults = document.getElementById('monthlyResults');
       results.style.display = 'block';
 
       taxResults.innerHTML = `
-        <p><strong>Your Results:</strong></p>
-        <p>2020 Tax: $${tax2020}</p>
-        <p>2023 Tax: $${tax2023}</p>
-        <p>Tax Change: $${(tax2023 - tax2020).toFixed(2)} (${taxChange}%)</p>
-        <br>
-        <p><strong>What Changed:</strong></p>
-        <p>• Your Home's Value: ${valueChange}%</p>
-        <p>• Your Area's Tax Rate: ${rateChange}%</p>
+        <p style="font-size: 1.2em; margin-bottom: 20px;">
+          <strong>Your tax bill changed because:</strong>
+        </p>
+        <p style="font-size: 1.1em; color: #2b6cb0;">
+          1. Your home's value went ${valueChange > 0 ? 'UP' : 'DOWN'} by ${Math.abs(valueChange)}%
+          <br>
+          <span style="font-size: 0.9em; color: #4a5568;">From $${value2020.toLocaleString()} to $${value2023.toLocaleString()}</span>
+        </p>
+        <p style="font-size: 1.1em; color: #2b6cb0;">
+          2. While your tax rate went ${rateChange < 0 ? 'DOWN' : 'UP'} by ${Math.abs(rateChange)}%
+        </p>
+        <div style="background: #e2e8f0; padding: 15px; border-radius: 8px; margin-top: 20px;">
+          <p style="font-size: 1.2em; margin: 0;">
+            <strong>Result: Your tax bill changed from $${parseFloat(tax2020).toLocaleString()} to $${parseFloat(tax2023).toLocaleString()}</strong>
+          </p>
+        </div>
+      `;
+
+      monthlyResults.innerHTML = `
+        <div class="monthly-payment">
+          2020: $${monthly2020} per month<br>
+          2023: $${monthly2023} per month<br>
+          <span style="color: ${monthlyChange > 0 ? '#e53e3e' : '#38a169'}">
+            ${monthlyChange > 0 ? '↑' : '↓'} ${monthlyChange > 0 ? '+' : ''}$${Math.abs(monthlyChange)} per month
+          </span>
+        </div>
+        <p class="note" style="text-align: center">
+          Most people pay property taxes as part of their monthly mortgage payment
+        </p>
       `;
     }
 
