@@ -747,19 +747,169 @@
             }
         },
         name: 'Kansas City KS (USD 500)'
+    },
+    'kck202': { 
+        2020: {
+            total: 173.761361,
+            breakdown: {
+                state: 1.500000,
+                county: 39.327324,
+                township: 38.470262,
+                school: 55.868864,
+                college: 27.425977,
+                library: 11.168934
+            }
+        },
+        2023: {
+            total: 170.733416,
+            breakdown: {
+                state: 1.500000,
+                county: 37.313168,
+                city: 38.459533,
+                school: 55.931119,
+                college: 26.364746,
+                library: 11.164850
+            }
+        },
+        name: 'Kansas City KS (USD 202)'
+    },
+    'kck203': { 
+        2020: {
+            total: 170.061285,
+            breakdown: {
+                state: 1.500000,
+                county: 39.327324,
+                township: 38.470262,
+                school: 52.168788,
+                college: 27.425977,
+                library: 11.168934
+            }
+        },
+        2023: {
+            total: 166.270000,
+            breakdown: {
+                state: 1.500000,
+                county: 37.313168,
+                city: 38.459533,
+                school: 51.467703,
+                college: 26.364746,
+                library: 11.164850
+            }
+        },
+        name: 'Kansas City KS (USD 203)'
+    },
+    'kck204': { 
+        2020: {
+            total: 167.492878,
+            breakdown: {
+                state: 1.500000,
+                county: 39.327324,
+                township: 38.470262,
+                school: 49.600381,
+                college: 27.425977,
+                library: 11.168934
+            }
+        },
+        2023: {
+            total: 164.853259,
+            breakdown: {
+                state: 1.500000,
+                county: 37.313168,
+                city: 38.459533,
+                school: 50.050962,
+                college: 26.364746,
+                library: 11.164850
+            }
+        },
+        name: 'Kansas City KS (USD 204)'
+    },
+    'bonner': { 
+        2020: {
+            total: 167.492878,
+            breakdown: {
+                state: 1.500000,
+                county: 39.327324,
+                township: 38.470262,
+                school: 49.600381,
+                college: 27.425977,
+                library: 11.168934
+            }
+        },
+        2023: {
+            total: 158.340104,
+            breakdown: {
+                state: 1.500000,
+                county: 37.313168,
+                city: 32.346377,
+                school: 49.650963,
+                college: 26.364746,
+                library: 11.164850
+            }
+        },
+        name: 'Bonner Springs'
+    },
+    'edwardsville': { 
+        2020: {
+            total: 178.592377,
+            breakdown: {
+                state: 1.500000,
+                county: 39.327324,
+                township: 49.569761,
+                school: 49.600381,
+                college: 27.425977,
+                library: 11.168934
+            }
+        },
+        2023: {
+            total: 164.853259,
+            breakdown: {
+                state: 1.500000,
+                county: 37.313168,
+                city: 38.459533,
+                school: 50.050962,
+                college: 26.364746,
+                library: 11.164850
+            }
+        },
+        name: 'Edwardsville'
+    },
+    'lakequivira': { 
+        2020: {
+            total: 152.518099,
+            breakdown: {
+                state: 1.500000,
+                county: 39.327324,
+                township: 23.495483,
+                school: 49.600381,
+                college: 27.425977,
+                library: 11.168934
+            }
+        },
+        2023: {
+            total: 151.692548,
+            breakdown: {
+                state: 1.500000,
+                county: 37.313168,
+                city: 25.298822,
+                school: 50.050962,
+                college: 26.364746,
+                library: 11.164850
+            }
+        },
+        name: 'Lake Quivira'
     }
 };
-
                 function updateTaxInfo() {
-                    const area = document.getElementById('taxArea').value;
-                    const rate2020 = taxRates[area][2020];
-                    const rate2023 = taxRates[area][2023];
-                    const change = ((rate2023 - rate2020) / rate2020 * 100).toFixed(2);
-                    
-                    document.getElementById('taxInfo').innerHTML = 
-                        `Tax rate changed by ${change}% in your area`;
-                }
-
+    const area = document.getElementById('taxArea').value;
+    if (taxRates[area]) {
+        const rate2020 = taxRates[area][2020].total;
+        const rate2023 = taxRates[area][2023].total;
+        const change = ((rate2023 - rate2020) / rate2020 * 100).toFixed(2);
+        
+        document.getElementById('taxInfo').innerHTML = 
+            `Tax rate changed by ${change}% in your area`;
+    }
+}
                 function calculateTaxChange() {
     const value2020 = parseFloat(document.getElementById('value2020').value);
     const value2023 = parseFloat(document.getElementById('value2023').value);
@@ -816,18 +966,6 @@
             </div>
         </div>
     `;
-
-    document.getElementById('monthlyResults').innerHTML = `
-        <h4>Monthly Payment Impact</h4>
-        <div class="monthly-change ${monthlyChange > 0 ? 'increase' : 'decrease'}">
-            ${monthlyChange > 0 ? '↑' : '↓'} 
-            ${monthlyChange > 0 ? '+' : ''}$${Math.abs(monthlyChange).toFixed(2)} per month
-        </div>
-        <div class="calculator-note">
-            Most people pay property taxes as part of their monthly mortgage payment
-        </div>
-    `;
-}
                 
 
                     document.getElementById('monthlyResults').innerHTML = `
