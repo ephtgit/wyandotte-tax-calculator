@@ -1,400 +1,957 @@
-/* Enhanced card styles */
-        .card {
-            background: var(--bg-secondary);
-            border-radius: var(--border-radius-md);
-            padding: var(--spacing-lg);
-            margin-bottom: var(--spacing-lg);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
+I'll break this down into sequential parts that you can paste one after another. Let's start with Part 1 - the basic structure and initial styles:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Understanding Wyandotte County property tax changes and the impact of revenue neutral rates">
+    <title>Wyandotte County Property Taxes Explained</title>
+    
+    <!-- External Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #2b6cb0;
+            --secondary-color: #4299e1;
+            --warning-color: #fc8181;
+            --success-color: #48bb78;
+            --background-color: #f0f4f8;
+            --text-color: #2d3748;
+            --spacing-unit: 1rem;
+            --border-radius: 8px;
         }
 
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-
-        /* New section: Revenue Neutral Explanation */
-        .revenue-neutral-section {
-            background: #fff;
-            padding: var(--spacing-xl);
-            border-radius: var(--border-radius-lg);
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--spacing-lg);
-            margin: var(--spacing-lg) 0;
-        }
-
-        .info-item {
-            background: var(--bg-primary);
-            padding: var(--spacing-lg);
-            border-radius: var(--border-radius-md);
-            border-left: 4px solid var(--primary-color);
-        }
-
-        /* Enhanced calculator styles */
-        .calculator-container {
-            background: linear-gradient(to bottom, #f8fafc, #f0f4f8);
-            padding: var(--spacing-xl);
-            border-radius: var(--border-radius-lg);
-            margin: var(--spacing-xl) 0;
-        }
-
-        .input-group {
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: var(--spacing-sm);
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: var(--spacing-md);
-            border: 2px solid #e2e8f0;
-            border-radius: var(--border-radius-md);
-            font-size: var(--font-size-base);
-            transition: border-color 0.2s;
-        }
-
-        .input-group input:focus,
-        .input-group select:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-
-        /* New section: Housing Inflation Visualization */
-        .housing-inflation {
-            background: white;
-            padding: var(--spacing-xl);
-            border-radius: var(--border-radius-lg);
-            margin: var(--spacing-xl) 0;
-        }
-
-        .chart-container {
-            height: 400px;
-            margin: var(--spacing-lg) 0;
-        }
-
-        /* Enhanced accessibility styles */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
+        * {
+            box-sizing: border-box;
+            margin: 0;
             padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
         }
 
-        /* New FAQ section styles */
-        .faq-section {
-            margin: var(--spacing-xl) 0;
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            padding: 20px;
         }
 
-        .faq-item {
-            border-bottom: 1px solid #e2e8f0;
-            padding: var(--spacing-md) 0;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .faq-question {
-            font-weight: 600;
-            cursor: pointer;
+        .section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: var(--border-radius);
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            text-align: center;
+        }
+
+        .nav-links {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: var(--spacing-md) 0;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
 
-        .faq-answer {
-            padding: var(--spacing-md) 0;
-            color: var(--text-secondary);
+        .nav-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            background: white;
+            transition: background-color 0.2s;
         }
 
-        /* Mobile responsiveness */
+        .nav-links a:hover {
+            background-color: var(--background-color);
+        }
+
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
             .nav-links {
                 flex-direction: column;
                 align-items: center;
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .calculator-container {
-                padding: var(--spacing-md);
             }
         }
     </style>
 </head>
 <body>
-    <!-- Enhanced Navigation -->
-    <nav class="nav-container" role="navigation">
-        <div class="nav-links">
+    <div class="container">
+        <nav class="nav-links">
             <a href="#overview">Overview</a>
             <a href="#calculator">Tax Calculator</a>
             <a href="#revenue-neutral">Revenue Neutral</a>
             <a href="#housing-inflation">Housing Inflation</a>
             <a href="#faq">FAQ</a>
-        </div>
-    </nav>
+        </nav>
 
-    <main class="main-container">
-        <!-- Hero Section -->
-        <section class="hero" role="banner">
-            <h1>Understanding Your Property Taxes</h1>
-            <p>Learn why your taxes changed and what it means for Wyandotte County</p>
-        </section>
+        <h1>Why Did My Property Taxes Go Up? 📈</h1>
+```
+            <!-- Overview Section -->
+        <section id="overview" class="section">
+            <div class="key-stats">
+                <style>
+                    .key-stats {
+                        background: #f8fafc;
+                        padding: 2rem;
+                        border-radius: 12px;
+                        margin: 2rem 0;
+                    }
 
-        <!-- Overview Section -->
-        <section id="overview" class="card">
-            <h2>Key Points to Understand</h2>
-            <div class="info-grid">
-                <div class="info-item">
-                    <h3>Home Values Increased</h3>
-                    <p>Average home values in Wyandotte County rose by 46% while tax rates decreased by only 1.85%</p>
+                    .stats-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                        gap: 1.5rem;
+                        margin-top: 1.5rem;
+                    }
+
+                    .stat-card {
+                        background: white;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        text-align: center;
+                    }
+
+                    .stat-number {
+                        font-size: 2.5rem;
+                        font-weight: bold;
+                        color: var(--primary-color);
+                        display: block;
+                        margin-bottom: 0.5rem;
+                    }
+
+                    .stat-label {
+                        font-size: 1.1rem;
+                        color: var(--text-color);
+                    }
+
+                    .highlight-box {
+                        background: #dbeafe;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        margin: 2rem 0;
+                        text-align: center;
+                        font-size: 1.1em;
+                    }
+
+                    .impact-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                        gap: 1.5rem;
+                        margin-top: 2rem;
+                    }
+
+                    .impact-card {
+                        background: white;
+                        padding: 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    }
+
+                    .impact-card h3 {
+                        color: var(--primary-color);
+                        margin-bottom: 1rem;
+                        font-size: 1.3rem;
+                    }
+
+                    .impact-card ul {
+                        list-style-type: none;
+                        padding-left: 0;
+                    }
+
+                    .impact-card li {
+                        padding: 0.5rem 0;
+                        border-bottom: 1px solid #edf2f7;
+                    }
+
+                    .impact-card li:last-child {
+                        border-bottom: none;
+                    }
+                </style>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">46%</span>
+                        <span class="stat-label">Average Home Value Increase</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">-1.85%</span>
+                        <span class="stat-label">Tax Rate Change</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">11.5%</span>
+                        <span class="stat-label">Assessment Rate</span>
+                    </div>
                 </div>
-                <div class="info-item">
-                    <h3>Assessment Rate</h3>
-                    <p>Kansas homes are taxed at 11.5% of their assessed value</p>
+
+                <div class="highlight-box">
+                    <strong>Important:</strong> In Kansas, homes are taxed at 11.5% of their value<br>
+                    For example, a $200,000 home is taxed on $23,000 (11.5% of its value)
                 </div>
-                <div class="info-item">
-                    <h3>Service Impact</h3>
-                    <p>Revenue neutral rates could affect essential services like police, fire, and road maintenance</p>
+
+                <div class="impact-grid">
+                    <div class="impact-card">
+                        <h3>What This Means For You</h3>
+                        <ul>
+                            <li>Average home in Wyandotte County:<br>
+                                2020: Worth $117,422<br>
+                                2023: Worth $171,582</li>
+                            <li>That's a $54,160 increase in value!</li>
+                            <li>Even with lower tax rates, most homeowners will pay more</li>
+                        </ul>
+                    </div>
+                    <div class="impact-card">
+                        <h3>Tax Rate Changes</h3>
+                        <ul>
+                            <li>City rate drops from 38.460 to 34.293</li>
+                            <li>County rate drops from 37.313 to 33.311</li>
+                            <li>These decreases aren't enough to offset value increases</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+        </section>
+        <!-- Revenue Neutral Section -->
+        <section id="revenue-neutral" class="section">
+            <style>
+                .revenue-neutral-container {
+                    background: #f8fafc;
+                    padding: 2rem;
+                    border-radius: 12px;
+                    margin: 2rem 0;
+                }
+
+                .comparison-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                    gap: 2rem;
+                    margin: 2rem 0;
+                }
+
+                .comparison-card {
+                    background: white;
+                    padding: 1.5rem;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+
+                .comparison-card.warning {
+                    border-left: 4px solid var(--warning-color);
+                }
+
+                .service-impacts {
+                    margin-top: 2rem;
+                }
+
+                .impact-box {
+                    background: #fff5f5;
+                    border-left: 4px solid var(--warning-color);
+                    padding: 1.5rem;
+                    margin: 1rem 0;
+                    border-radius: 0 8px 8px 0;
+                }
+
+                .impact-item {
+                    margin: 1rem 0;
+                    padding-left: 1.5rem;
+                    border-left: 3px solid var(--warning-color);
+                }
+
+                .info-callout {
+                    background: #e6fffa;
+                    padding: 1.5rem;
+                    border-radius: 8px;
+                    margin: 1.5rem 0;
+                    border-left: 4px solid #38b2ac;
+                }
+            </style>
+
+            <div class="revenue-neutral-container">
+                <h2>Understanding "Revenue Neutral" Rates</h2>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h3>What Officials Say</h3>
+                        <p>"Revenue neutral means keeping the same amount of total revenue as last year."</p>
+                        <ul>
+                            <li>Same total dollars collected</li>
+                            <li>Lower tax rates</li>
+                            <li>Maintains current budget</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card warning">
+                        <h3>The Reality</h3>
+                        <p>With inflation at 7-9% and rising costs:</p>
+                        <ul>
+                            <li>Same dollar amount buys less services</li>
+                            <li>Equipment costs more to maintain</li>
+                            <li>Staff wages fall behind inflation</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="service-impacts">
+                    <h3>Real Impact on County Services</h3>
+                    
+                    <div class="impact-box">
+                        <div class="impact-item">
+                            <strong>Emergency Services:</strong>
+                            <ul>
+                                <li>Longer 911 response times</li>
+                                <li>Delayed equipment updates</li>
+                                <li>Reduced police patrols</li>
+                            </ul>
+                        </div>
+
+                        <div class="impact-item">
+                            <strong>Infrastructure:</strong>
+                            <ul>
+                                <li>Only emergency pothole repairs</li>
+                                <li>Delayed park maintenance</li>
+                                <li>Postponed facility updates</li>
+                            </ul>
+                        </div>
+
+                        <div class="impact-item">
+                            <strong>Community Programs:</strong>
+                            <ul>
+                                <li>Reduced community center hours</li>
+                                <li>Cancelled youth programs</li>
+                                <li>Limited senior services</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-callout">
+                    <h3>Did You Know?</h3>
+                    <p>Even with "revenue neutral" rates, most homeowners will pay more in taxes due to increased home values. However, the county will have less purchasing power to provide services due to inflation.</p>
+                </div>
+            </div>
+        </section>
+        <!-- Housing Inflation Section -->
+        <section id="housing-inflation" class="section">
+            <style>
+                .housing-container {
+                    background: #f8fafc;
+                    padding: 2rem;
+                    border-radius: 12px;
+                    margin: 2rem 0;
+                }
+
+                .value-chart {
+                    background: white;
+                    padding: 1.5rem;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    margin: 2rem 0;
+                }
+
+                .trend-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 1.5rem;
+                    margin: 2rem 0;
+                }
+
+                .trend-card {
+                    background: white;
+                    padding: 1.5rem;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+
+                .value-example {
+                    background: #dbeafe;
+                    padding: 1.5rem;
+                    border-radius: 8px;
+                    margin: 1.5rem 0;
+                }
+
+                .price-change {
+                    font-size: 1.2em;
+                    font-weight: bold;
+                    color: var(--primary-color);
+                    text-align: center;
+                    padding: 1rem;
+                    background: white;
+                    border-radius: 8px;
+                    margin: 1rem 0;
+                }
+
+                .neighborhood-selector {
+                    width: 100%;
+                    padding: 0.8rem;
+                    border: 2px solid #e2e8f0;
+                    border-radius: 8px;
+                    margin-bottom: 1rem;
+                    font-size: 1rem;
+                }
+
+                .chart-container {
+                    height: 400px;
+                    margin: 2rem 0;
+                }
+            </style>
+
+            <div class="housing-container">
+                <h2>Housing Value Changes in Wyandotte County</h2>
+
+                <div class="value-example">
+                    <h3>Average Home Value Changes</h3>
+                    <div class="price-change">
+                        2020: $117,422 → 2023: $171,582
+                        <br>
+                        <span style="color: #e53e3e;">↑ $54,160 increase (46%)</span>
+                    </div>
+                </div>
+
+                <div class="trend-grid">
+                    <div class="trend-card">
+                        <h3>Key Factors Driving Values Up</h3>
+                        <ul>
+                            <li>Low housing inventory</li>
+                            <li>High demand from buyers</li>
+                            <li>Rising construction costs</li>
+                            <li>Low interest rates (2020-2021)</li>
+                        </ul>
+                    </div>
+                    <div class="trend-card">
+                        <h3>Impact on Property Taxes</h3>
+                        <ul>
+                            <li>Higher assessed values</li>
+                            <li>Increased tax base</li>
+                            <li>Greater burden on homeowners</li>
+                            <li>Disproportionate impact on fixed incomes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="value-chart">
+                    <h3>Your Neighborhood Trends</h3>
+                    <select id="neighborhood-selector" class="neighborhood-selector" onchange="updateChart()">
+                        <option value="downtown">Downtown KCK</option>
+                        <option value="strawberry">Strawberry Hill</option>
+                        <option value="rosedale">Rosedale</option>
+                        <option value="piper">Piper</option>
+                    </select>
+                    <div class="chart-container">
+                        <canvas id="valueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // Chart.js configuration
+                let valueChart;
+                
+                const chartData = {
+                    downtown: {
+                        labels: ['2020', '2021', '2022', '2023'],
+                        values: [115000, 130000, 150000, 168000]
+                    },
+                    strawberry: {
+                        labels: ['2020', '2021', '2022', '2023'],
+                        values: [125000, 145000, 165000, 182000]
+                    },
+                    rosedale: {
+                        labels: ['2020', '2021', '2022', '2023'],
+                        values: [135000, 155000, 175000, 195000]
+                    },
+                    piper: {
+                        labels: ['2020', '2021', '2022', '2023'],
+                        values: [180000, 205000, 230000, 260000]
+                    }
+                };
+
+                function createChart(neighborhood) {
+                    const ctx = document.getElementById('valueChart').getContext('2d');
+                    const data = chartData[neighborhood];
+
+                    if (valueChart) {
+                        valueChart.destroy();
+                    }
+
+                    valueChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Average Home Value',
+                                data: data.values,
+                                borderColor: '#2b6cb0',
+                                backgroundColor: 'rgba(43, 108, 176, 0.1)',
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return `$${context.raw.toLocaleString()}`;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: false,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return '$' + value.toLocaleString();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                function updateChart() {
+                    const neighborhood = document.getElementById('neighborhood-selector').value;
+                    createChart(neighborhood);
+                }
+
+                // Initialize chart with default neighborhood
+                document.addEventListener('DOMContentLoaded', function() {
+                    createChart('downtown');
+                });
+            </script>
         </section>
         <!-- Enhanced Calculator Section -->
-        <section id="calculator" class="calculator-container">
-            <h2>Calculate Your Property Tax Change</h2>
-            <div id="react-calculator"></div>
+        <section id="calculator" class="section">
+            <style>
+                .calculator-container {
+                    background: #f8fafc;
+                    padding: 2rem;
+                    border-radius: 12px;
+                    margin: 2rem 0;
+                }
+
+                .calculator-form {
+                    background: white;
+                    padding: 2rem;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+
+                .form-group {
+                    margin-bottom: 1.5rem;
+                }
+
+                .form-group label {
+                    display: block;
+                    margin-bottom: 0.5rem;
+                    font-weight: 600;
+                    color: var(--text-color);
+                }
+
+                .form-group select,
+                .form-group input {
+                    width: 100%;
+                    padding: 0.8rem;
+                    border: 2px solid #e2e8f0;
+                    border-radius: 8px;
+                    font-size: 1rem;
+                    transition: border-color 0.2s;
+                }
+
+                .form-group select:focus,
+                .form-group input:focus {
+                    border-color: var(--primary-color);
+                    outline: none;
+                }
+
+                .calculate-btn {
+                    background: var(--success-color);
+                    color: white;
+                    padding: 1rem 2rem;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    cursor: pointer;
+                    width: 100%;
+                    transition: background-color 0.2s;
+                }
+
+                .calculate-btn:hover {
+                    background: #38a169;
+                }
+
+                .results-container {
+                    display: none;
+                    margin-top: 2rem;
+                    background: white;
+                    padding: 1.5rem;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+
+                .result-box {
+                    background: #f7fafc;
+                    padding: 1.5rem;
+                    border-radius: 8px;
+                    margin: 1rem 0;
+                }
+
+                .monthly-change {
+                    font-size: 1.3rem;
+                    font-weight: bold;
+                    text-align: center;
+                    padding: 1rem;
+                    margin: 1rem 0;
+                    border-radius: 8px;
+                }
+
+                .increase {
+                    background: #fff5f5;
+                    color: #e53e3e;
+                }
+
+                .decrease {
+                    background: #f0fff4;
+                    color: #38a169;
+                }
+
+                .calculator-note {
+                    font-size: 0.9rem;
+                    color: #718096;
+                    margin-top: 0.5rem;
+                }
+            </style>
+
+            <div class="calculator-container">
+                <h2>Calculate Your Property Tax Change</h2>
+                
+                <div class="calculator-form">
+                    <div class="form-group">
+                        <label for="taxArea">1. Select Your Tax Area:</label>
+                        <select id="taxArea" onchange="updateTaxInfo()">
+                            <option value="kck500">Kansas City KS (USD 500) - Most common</option>
+                            <option value="kck202">Kansas City KS (USD 202)</option>
+                            <option value="kck203">Kansas City KS (USD 203)</option>
+                            <option value="kck204">Kansas City KS (USD 204)</option>
+                            <option value="bonner">Bonner Springs</option>
+                            <option value="edwardsville">Edwardsville</option>
+                            <option value="lakequivira">Lake Quivira</option>
+                        </select>
+                        <div id="taxInfo" class="calculator-note"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="value2020">2. Your Home's 2020 Value:</label>
+                        <input type="number" id="value2020" placeholder="Enter 2020 value">
+                        <div class="calculator-note">Use your 2020 tax statement or county assessment</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="value2023">3. Your Home's 2023 Value:</label>
+                        <input type="number" id="value2023" placeholder="Enter 2023 value">
+                        <div class="calculator-note">From your recent county assessment notice</div>
+                    </div>
+
+                    <button class="calculate-btn" onclick="calculateTaxChange()">Calculate My Tax Change</button>
+                </div>
+
+                <div id="calculatorResults" class="results-container">
+                    <h3>Your Tax Change Summary</h3>
+                    <div id="yearlyResults" class="result-box"></div>
+                    <div id="monthlyResults" class="result-box"></div>
+                </div>
+            </div>
+
+            <script>
+                const taxRates = {
+                    'kck500': { 2020: 167.544406, 2023: 164.438579, name: 'Kansas City KS (USD 500)' },
+                    'kck202': { 2020: 173.761361, 2023: 170.733416, name: 'Kansas City KS (USD 202)' },
+                    'kck203': { 2020: 170.061285, 2023: 166.270000, name: 'Kansas City KS (USD 203)' },
+                    'kck204': { 2020: 167.492878, 2023: 164.853259, name: 'Kansas City KS (USD 204)' },
+                    'bonner': { 2020: 167.492878, 2023: 158.340104, name: 'Bonner Springs' },
+                    'edwardsville': { 2020: 178.592377, 2023: 164.853259, name: 'Edwardsville' },
+                    'lakequivira': { 2020: 152.518099, 2023: 151.692548, name: 'Lake Quivira' }
+                };
+
+                function updateTaxInfo() {
+                    const area = document.getElementById('taxArea').value;
+                    const rate2020 = taxRates[area][2020];
+                    const rate2023 = taxRates[area][2023];
+                    const change = ((rate2023 - rate2020) / rate2020 * 100).toFixed(2);
+                    
+                    document.getElementById('taxInfo').innerHTML = 
+                        `Tax rate changed by ${change}% in your area`;
+                }
+
+                function calculateTaxChange() {
+                    const value2020 = parseFloat(document.getElementById('value2020').value);
+                    const value2023 = parseFloat(document.getElementById('value2023').value);
+                    const area = document.getElementById('taxArea').value;
+
+                    if (!value2020 || !value2023) {
+                        alert('Please enter both 2020 and 2023 home values');
+                        return;
+                    }
+
+                    const ASSESSMENT_RATE = 0.115; // 11.5% assessment rate
+                    const assessed2020 = value2020 * ASSESSMENT_RATE;
+                    const assessed2023 = value2023 * ASSESSMENT_RATE;
+
+                    const tax2020 = (assessed2020 * taxRates[area][2020] / 1000);
+                    const tax2023 = (assessed2023 * taxRates[area][2023] / 1000);
+
+                    const monthly2020 = tax2020 / 12;
+                    const monthly2023 = tax2023 / 12;
+                    const monthlyChange = monthly2023 - monthly2020;
+
+                    const valueChange = ((value2023 - value2020) / value2020 * 100).toFixed(1);
+
+                    document.getElementById('calculatorResults').style.display = 'block';
+                    
+                    document.getElementById('yearlyResults').innerHTML = `
+                        <h4>Yearly Tax Comparison</h4>
+                        <p>2020 Tax: $${tax2020.toFixed(2)}</p>
+                        <p>2023 Tax: $${tax2023.toFixed(2)}</p>
+                        <p>Your home value changed by ${valueChange}%</p>
+                    `;
+
+                    document.getElementById('monthlyResults').innerHTML = `
+                        <h4>Monthly Payment Impact</h4>
+                        <div class="monthly-change ${monthlyChange > 0 ? 'increase' : 'decrease'}">
+                            ${monthlyChange > 0 ? '↑' : '↓'} 
+                            ${monthlyChange > 0 ? '+' : ''}$${Math.abs(monthlyChange).toFixed(2)} per month
+                        </div>
+                        <div class="calculator-note">
+                            Most people pay property taxes as part of their monthly mortgage payment
+                        </div>
+                    `;
+                }
+
+                // Initialize tax info
+                updateTaxInfo();
+            </script>
         </section>
+        <!-- FAQ Section -->
+        <section id="faq" class="section">
+            <style>
+                .faq-container {
+                    background: #f8fafc;
+                    padding: 2rem;
+                    border-radius: 12px;
+                    margin: 2rem 0;
+                }
 
-        <!-- New Revenue Neutral Explanation Section -->
-        <section id="revenue-neutral" class="revenue-neutral-section">
-            <h2>Understanding "Revenue Neutral" - What It Really Means</h2>
-            
-            <div class="info-grid">
-                <div class="card">
-                    <h3>What is Revenue Neutral?</h3>
-                    <p>A "revenue neutral" rate means the county collects the same total amount of tax dollars as last year, even though property values increased.</p>
-                    <div class="example-box">
-                        <strong>Simple Example:</strong>
-                        <p>If all home values doubled, a revenue neutral rate would be half the previous rate.</p>
-                    </div>
-                </div>
+                .faq-item {
+                    background: white;
+                    margin-bottom: 1rem;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    overflow: hidden;
+                }
 
-                <div class="card">
-                    <h3>The Problem With Revenue Neutral</h3>
-                    <ul class="impact-list">
-                        <li>Doesn't account for inflation</li>
-                        <li>Ignores rising costs of services</li>
-                        <li>Can lead to service cuts</li>
-                        <li>Doesn't consider population growth</li>
-                    </ul>
-                </div>
-            </div>
+                .faq-question {
+                    padding: 1.5rem;
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    font-weight: 600;
+                    color: var(--primary-color);
+                }
 
-            <!-- Service Impact Visualization -->
-            <div class="service-impact">
-                <h3>What Services Would Be Affected?</h3>
-                <div class="impact-grid">
-                    <div class="impact-card emergency">
-                        <h4>Emergency Services</h4>
-                        <ul>
-                            <li>Longer 911 response times</li>
-                            <li>Reduced fire department staffing</li>
-                            <li>Fewer police patrols</li>
-                        </ul>
-                    </div>
-                    <div class="impact-card infrastructure">
-                        <h4>Infrastructure</h4>
-                        <ul>
-                            <li>Delayed road repairs</li>
-                            <li>Reduced snow removal</li>
-                            <li>Postponed infrastructure updates</li>
-                        </ul>
-                    </div>
-                    <div class="impact-card community">
-                        <h4>Community Services</h4>
-                        <ul>
-                            <li>Limited park maintenance</li>
-                            <li>Reduced community programs</li>
-                            <li>Fewer neighborhood services</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
+                .faq-question:hover {
+                    background: #f7fafc;
+                }
 
-        <!-- New Housing Inflation Section -->
-        <section id="housing-inflation" class="housing-inflation">
-            <h2>Housing Inflation in Wyandotte County</h2>
-            
-            <div class="chart-container">
-                <!-- React Chart Component Will Be Rendered Here -->
-                <div id="housing-chart"></div>
-            </div>
+                .faq-answer {
+                    padding: 0;
+                    max-height: 0;
+                    overflow: hidden;
+                    transition: all 0.3s ease;
+                    background: #f8fafc;
+                }
 
-            <div class="info-grid">
-                <div class="card">
-                    <h3>Why Are Home Values Rising?</h3>
-                    <ul>
-                        <li>Increased demand for housing</li>
-                        <li>Limited housing supply</li>
-                        <li>Low interest rates (historical)</li>
-                        <li>Regional economic growth</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>Impact on Homeowners</h3>
-                    <ul>
-                        <li>Higher property taxes</li>
-                        <li>Increased insurance costs</li>
-                        <li>Greater equity in homes</li>
-                        <li>Higher cost of living</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+                .faq-answer.active {
+                    padding: 1.5rem;
+                    max-height: 500px;
+                }
 
-        <!-- Enhanced FAQ Section -->
-        <section id="faq" class="faq-section">
-            <h2>Frequently Asked Questions</h2>
-            
+                .faq-toggle {
+                    font-size: 1.5rem;
+                    transition: transform 0.3s ease;
+                }
+
+                .faq-toggle.active {
+                    transform: rotate(45deg);
+                }
+
+                .resources-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 1.5rem;
+                    margin: 2rem 0;
+                }
+
+                .resource-card {
+                    background: white;
+                    padding: 1.5rem;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+
+                .resource-card h4 {
+                    color: var(--primary-color);
+                    margin-bottom: 1rem;
+                }
+
+                .resource-link {
+                    color: var(--primary-color);
+                    text-decoration: none;
+                    display: block;
+                    margin: 0.5rem 0;
+                }
+
+                .resource-link:hover {
+                    text-decoration: underline;
+                }
+
+                footer {
+                    margin-top: 3rem;
+                    padding-top: 2rem;
+                    border-top: 2px solid #e2e8f0;
+                    color: #718096;
+                    font-size: 0.9rem;
+                }
+            </style>
+
             <div class="faq-container">
+                <h2>Frequently Asked Questions</h2>
+
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFAQ(this)">
                         Why did my taxes go up when the rate went down?
-                        <span class="arrow">▼</span>
+                        <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        While tax rates decreased slightly (1.85%), property values increased significantly (46% on average). Since taxes are based on your property's value, the large increase in value outweighed the small decrease in rates.
+                        While tax rates decreased slightly, property values increased significantly (average 46%). Since taxes are based on your property's value, the large value increase typically results in higher taxes despite lower rates. For example, if your home value increased from $100,000 to $146,000, you'll pay more even with a slightly lower tax rate.
                     </div>
                 </div>
 
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFAQ(this)">
-                        How is my property tax calculated?
-                        <span class="arrow">▼</span>
+                        What is the 11.5% assessment rate?
+                        <span class="faq-toggle">+</span>
                     </div>
                     <div class="faq-answer">
-                        Your property tax is calculated by:
-                        <ol>
-                            <li>Taking your home's assessed value</li>
-                            <li>Multiplying it by 11.5% (Kansas residential assessment rate)</li>
-                            <li>Multiplying that by the mill levy rate</li>
-                            <li>Dividing by 1000</li>
-                        </ol>
+                        In Kansas, residential properties are taxed on 11.5% of their total value. This means if your home is worth $200,000, your taxes are calculated on $23,000 (11.5% of $200,000). This assessed value is then multiplied by the mill levy rate to determine your actual tax amount.
                     </div>
                 </div>
 
-                <!-- Additional FAQ items -->
-            </div>
-        </section>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What does "revenue neutral" really mean?
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        "Revenue neutral" means the county collects the same total dollar amount as the previous year. However, this doesn't account for inflation or rising costs. While it sounds good, it actually results in service cuts because the same dollar amount buys less each year due to inflation.
+                    </div>
+                </div>
 
-        <!-- Resources Section -->
-        <section class="resources-section">
-            <h2>Additional Resources</h2>
-            <div class="resource-grid">
-                <a href="#" class="resource-card">
-                    <h3>County Assessor's Office</h3>
-                    <p>Get official property valuations and appeal information</p>
-                </a>
-                <a href="#" class="resource-card">
-                    <h3>Budget Documents</h3>
-                    <p>Review detailed county budget information</p>
-                </a>
-                <a href="#" class="resource-card">
-                    <h3>Tax Payment Options</h3>
-                    <p>Learn about payment plans and assistance programs</p>
-                </a>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How can I challenge my property value?
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        You can appeal your property valuation through the Wyandotte County Appraiser's Office. The appeal must be filed within 30 days of receiving your valuation notice. You'll need to provide evidence supporting your claim, such as recent sales of comparable properties or an independent appraisal.
+                    </div>
+                </div>
             </div>
-        </section>
-    </main>
 
-    <!-- Enhanced Footer -->
-    <footer class="site-footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Contact Information</h3>
-                <p>Wyandotte County Treasurer's Office</p>
-                <p>Phone: (913) XXX-XXXX</p>
-                <p>Email: taxes@wycokck.org</p>
+            <!-- Additional Resources Section -->
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h4>Official Resources</h4>
+                    <a href="https://www.wycokck.org/Appraiser" class="resource-link" target="_blank">County Appraiser's Office</a>
+                    <a href="https://www.wycokck.org/Treasurer" class="resource-link" target="_blank">County Treasurer's Office</a>
+                    <a href="https://www.wycokck.org/Budget" class="resource-link" target="_blank">County Budget Office</a>
+                </div>
+                <div class="resource-card">
+                    <h4>Help & Assistance</h4>
+                    <a href="#" class="resource-link">Property Tax Relief Programs</a>
+                    <a href="#" class="resource-link">Senior Tax Programs</a>
+                    <a href="#" class="resource-link">Payment Plan Options</a>
+                </div>
             </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
+
+            <!-- Footer -->
+            <footer>
+                <p>Data Sources:</p>
                 <ul>
-                    <li><a href="#calculator">Tax Calculator</a></li>
-                    <li><a href="#faq">FAQs</a></li>
-                    <li><a href="#resources">Resources</a></li>
+                    <li>Home values: Wyandotte County Appraiser's Office</li>
+                    <li>Tax rates: Official Wyandotte County Tax Levy Documents</li>
+                    <li>Service impacts: 2023-2024 Unified Government Budget</li>
                 </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Updates</h3>
-                <p>Last updated: [Current Date]</p>
-                <p>Data sources: County Assessor's Office, Budget Department</p>
-            </div>
+                <p style="margin-top: 1rem;">Last updated: March 2024</p>
+            </footer>
         </div>
-    </footer>
 
-    <!-- JavaScript for FAQ Toggle -->
-    <script>
-        function toggleFAQ(element) {
-            const answer = element.nextElementSibling;
-            const arrow = element.querySelector('.arrow');
-            
-            if (answer.style.display === 'block') {
-                answer.style.display = 'none';
-                arrow.textContent = '▼';
-            } else {
-                answer.style.display = 'block';
-                arrow.textContent = '▲';
+        <script>
+            function toggleFAQ(element) {
+                const answer = element.nextElementSibling;
+                const toggle = element.querySelector('.faq-toggle');
+                
+                // Close all other FAQs
+                document.querySelectorAll('.faq-answer').forEach(item => {
+                    if (item !== answer) {
+                        item.classList.remove('active');
+                    }
+                });
+                document.querySelectorAll('.faq-toggle').forEach(item => {
+                    if (item !== toggle) {
+                        item.classList.remove('active');
+                    }
+                });
+
+                // Toggle current FAQ
+                answer.classList.toggle('active');
+                toggle.classList.toggle('active');
             }
-        }
-    </script>
-
-    <!-- React Components Script -->
-    <script type="text/babel">
-        // Housing Price Chart Component
-        const HousingChart = () => {
-            const data = [
-                { year: 2018, value: 100000 },
-                { year: 2019, value: 110000 },
-                { year: 2020, value: 117422 },
-                { year: 2021, value: 135000 },
-                { year: 2022, value: 150000 },
-                { year: 2023, value: 171582 }
-            ];
-
-            return (
-                <ResponsiveContainer width="100%" height={400}>
-                    <LineChart data={data}>
-                        <XAxis dataKey="year" />
-                        <YAxis />
-                        <Tooltip />
-                        <Line type="monotone" dataKey="value" stroke="#2b6cb0" />
-                    </LineChart>
-                </ResponsiveContainer>
-            );
-        };
-
-        // Render the chart
-        ReactDOM.createRoot(document.getElementById('housing-chart'))
-            .render(<HousingChart />);
-    </script>
-</body>
+        </script>
+    </body>
 </html>
