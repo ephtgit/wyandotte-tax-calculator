@@ -761,60 +761,74 @@
                 }
 
                 function calculateTaxChange() {
-                    const value2020 = parseFloat(document.getElementById('value2020').value);
-                    const value2023 = parseFloat(document.getElementById('value2023').value);
-                    const area = document.getElementById('taxArea').value;
+    const value2020 = parseFloat(document.getElementById('value2020').value);
+    const value2023 = parseFloat(document.getElementById('value2023').value);
+    const area = document.getElementById('taxArea').value;
 
-                    if (!value2020 || !value2023) {
-                        alert('Please enter both 2020 and 2023 home values');
-                        return;
-                    }
+    if (!value2020 || !value2023) {
+        alert('Please enter both 2020 and 2023 home values');
+        return;
+    }
 
-                    const ASSESSMENT_RATE = 0.115; // 11.5% assessment rate
-                    const assessed2020 = value2020 * ASSESSMENT_RATE;
-                    const assessed2023 = value2023 * ASSESSMENT_RATE;
+    const ASSESSMENT_RATE = 0.115; // 11.5% assessment rate
+    const assessed2020 = value2020 * ASSESSMENT_RATE;
+    const assessed2023 = value2023 * ASSESSMENT_RATE;
 
-                    const tax2020 = (assessed2020 * taxRates[area][2020] / 1000);
-                    const tax2023 = (assessed2023 * taxRates[area][2023] / 1000);
+    // Fix: Access the total values correctly
+    const tax2020 = (assessed2020 * taxRates[area][2020].total / 1000);
+    const tax2023 = (assessed2023 * taxRates[area][2023].total / 1000);
 
-                    const monthly2020 = tax2020 / 12;
-                    const monthly2023 = tax2023 / 12;
-                    const monthlyChange = monthly2023 - monthly2020;
+    const monthly2020 = tax2020 / 12;
+    const monthly2023 = tax2023 / 12;
+    const monthlyChange = monthly2023 - monthly2020;
 
-                    const valueChange = ((value2023 - value2020) / value2020 * 100).toFixed(1);
+    const valueChange = ((value2023 - value2020) / value2020 * 100).toFixed(1);
 
-                    document.getElementById('calculatorResults').style.display = 'block';
-                    
-                    document.getElementById('yearlyResults').innerHTML = `
-    <h4>Yearly Tax Comparison</h4>
-    <div class="tax-breakdown">
-        <h5>2020 Breakdown:</h5>
-        <ul>
-            <li>State: ${taxRates[area][2020].breakdown.state} mills</li>
-            <li>County: ${taxRates[area][2020].breakdown.county} mills</li>
-            <li>Township/City: ${taxRates[area][2020].breakdown.township} mills</li>
-            <li>School: ${taxRates[area][2020].breakdown.school} mills</li>
-            <li>College: ${taxRates[area][2020].breakdown.college} mills</li>
-            <li>Library: ${taxRates[area][2020].breakdown.library} mills</li>
-            <li><strong>Total: ${taxRates[area][2020].total} mills</strong></li>
-        </ul>
-        <h5>2023 Breakdown:</h5>
-        <ul>
-            <li>State: ${taxRates[area][2023].breakdown.state} mills</li>
-            <li>County: ${taxRates[area][2023].breakdown.county} mills</li>
-            <li>City: ${taxRates[area][2023].breakdown.city} mills</li>
-            <li>School: ${taxRates[area][2023].breakdown.school} mills</li>
-            <li>College: ${taxRates[area][2023].breakdown.college} mills</li>
-            <li>Library: ${taxRates[area][2023].breakdown.library} mills</li>
-            <li><strong>Total: ${taxRates[area][2023].total} mills</strong></li>
-        </ul>
-        <div class="tax-summary">
-            <p>2020 Tax: $${tax2020.toFixed(2)}</p>
-            <p>2023 Tax: $${tax2023.toFixed(2)}</p>
-            <p>Your home value changed by ${valueChange}%</p>
+    document.getElementById('calculatorResults').style.display = 'block';
+    
+    document.getElementById('yearlyResults').innerHTML = `
+        <h4>Yearly Tax Comparison</h4>
+        <div class="tax-breakdown">
+            <h5>2020 Breakdown:</h5>
+            <ul>
+                <li>State: ${taxRates[area][2020].breakdown.state} mills</li>
+                <li>County: ${taxRates[area][2020].breakdown.county} mills</li>
+                <li>Township/City: ${taxRates[area][2020].breakdown.township} mills</li>
+                <li>School: ${taxRates[area][2020].breakdown.school} mills</li>
+                <li>College: ${taxRates[area][2020].breakdown.college} mills</li>
+                <li>Library: ${taxRates[area][2020].breakdown.library} mills</li>
+                <li><strong>Total: ${taxRates[area][2020].total} mills</strong></li>
+            </ul>
+            <h5>2023 Breakdown:</h5>
+            <ul>
+                <li>State: ${taxRates[area][2023].breakdown.state} mills</li>
+                <li>County: ${taxRates[area][2023].breakdown.county} mills</li>
+                <li>City: ${taxRates[area][2023].breakdown.city} mills</li>
+                <li>School: ${taxRates[area][2023].breakdown.school} mills</li>
+                <li>College: ${taxRates[area][2023].breakdown.college} mills</li>
+                <li>Library: ${taxRates[area][2023].breakdown.library} mills</li>
+                <li><strong>Total: ${taxRates[area][2023].total} mills</strong></li>
+            </ul>
+            <div class="tax-summary">
+                <p>2020 Tax: $${tax2020.toFixed(2)}</p>
+                <p>2023 Tax: $${tax2023.toFixed(2)}</p>
+                <p>Your home value changed by ${valueChange}%</p>
+            </div>
         </div>
-    </div>
-`;
+    `;
+
+    document.getElementById('monthlyResults').innerHTML = `
+        <h4>Monthly Payment Impact</h4>
+        <div class="monthly-change ${monthlyChange > 0 ? 'increase' : 'decrease'}">
+            ${monthlyChange > 0 ? '↑' : '↓'} 
+            ${monthlyChange > 0 ? '+' : ''}$${Math.abs(monthlyChange).toFixed(2)} per month
+        </div>
+        <div class="calculator-note">
+            Most people pay property taxes as part of their monthly mortgage payment
+        </div>
+    `;
+}
+                
 
                     document.getElementById('monthlyResults').innerHTML = `
                         <h4>Monthly Payment Impact</h4>
