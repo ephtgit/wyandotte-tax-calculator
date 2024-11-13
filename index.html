@@ -651,6 +651,34 @@
                     color: #718096;
                     margin-top: 0.5rem;
                 }
+                .tax-breakdown {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.tax-breakdown ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 1rem 0;
+}
+
+.tax-breakdown li {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.tax-breakdown h5 {
+    color: var(--primary-color);
+    margin-top: 1rem;
+}
+
+.tax-summary {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #e2e8f0;
+}
             </style>
 
             <div class="calculator-container">
@@ -758,11 +786,35 @@
                     document.getElementById('calculatorResults').style.display = 'block';
                     
                     document.getElementById('yearlyResults').innerHTML = `
-                        <h4>Yearly Tax Comparison</h4>
-                        <p>2020 Tax: $${tax2020.toFixed(2)}</p>
-                        <p>2023 Tax: $${tax2023.toFixed(2)}</p>
-                        <p>Your home value changed by ${valueChange}%</p>
-                    `;
+    <h4>Yearly Tax Comparison</h4>
+    <div class="tax-breakdown">
+        <h5>2020 Breakdown:</h5>
+        <ul>
+            <li>State: ${taxRates[area][2020].breakdown.state} mills</li>
+            <li>County: ${taxRates[area][2020].breakdown.county} mills</li>
+            <li>Township/City: ${taxRates[area][2020].breakdown.township} mills</li>
+            <li>School: ${taxRates[area][2020].breakdown.school} mills</li>
+            <li>College: ${taxRates[area][2020].breakdown.college} mills</li>
+            <li>Library: ${taxRates[area][2020].breakdown.library} mills</li>
+            <li><strong>Total: ${taxRates[area][2020].total} mills</strong></li>
+        </ul>
+        <h5>2023 Breakdown:</h5>
+        <ul>
+            <li>State: ${taxRates[area][2023].breakdown.state} mills</li>
+            <li>County: ${taxRates[area][2023].breakdown.county} mills</li>
+            <li>City: ${taxRates[area][2023].breakdown.city} mills</li>
+            <li>School: ${taxRates[area][2023].breakdown.school} mills</li>
+            <li>College: ${taxRates[area][2023].breakdown.college} mills</li>
+            <li>Library: ${taxRates[area][2023].breakdown.library} mills</li>
+            <li><strong>Total: ${taxRates[area][2023].total} mills</strong></li>
+        </ul>
+        <div class="tax-summary">
+            <p>2020 Tax: $${tax2020.toFixed(2)}</p>
+            <p>2023 Tax: $${tax2023.toFixed(2)}</p>
+            <p>Your home value changed by ${valueChange}%</p>
+        </div>
+    </div>
+`;
 
                     document.getElementById('monthlyResults').innerHTML = `
                         <h4>Monthly Payment Impact</h4>
