@@ -152,6 +152,11 @@
       color: #718096;
     }
   </style>
+  <!-- Add these before </head> -->
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
 </head>
 <body>
   <div class="container">
@@ -378,5 +383,148 @@
     // Initialize rate display
     updateRate();
   </script>
+  <!-- Add this before </body> -->
+<script type="text/babel">
+  // First, let's create a simple React version of the calculator
+  const TaxCalculator = () => {
+    const [selectedArea, setSelectedArea] = React.useState('kck500');
+    const [value2020, setValue2020] = React.useState('');
+    const [value2023, setValue2023] = React.useState('');
+    const [results, setResults] = React.useState(null);
+
+    // Reuse your existing ASSESSMENT_RATE and rates object
+    const ASSESSMENT_RATE = 0.115;
+    const rates = {
+      'kck500': { 2020: 167.544406, 2023: 164.438579, name: 'Kansas City KS (USD 500)' },
+      'kck202': { 2020: 173.761361, 2023: 170.733416, name: 'Kansas City KS (USD 202)' },
+      'kck203': { 2020: 170.061285, 2023: 166.270000, name: 'Kansas City KS (USD 203)' },
+      'kck204': { 2020: 167.492878, 2023: 164.853259, name: 'Kansas City KS (USD 204)' },
+      'bonner': { 2020: 167.492878, 2023: 158.340104, name: 'Bonner Springs' },
+      'edwardsville': { 2020: 178.592377, 2023: 164.853259, name: 'Edwardsville' },
+      'lakequivira': { 2020: 152.518099, 2023: 151.692548, name: 'Lake Quivira' }
+    };
+
+    const calculateTax = () => {
+      const val2020 = parseFloat(value2020);
+      const val2023 = parseFloat(value2023);
+      
+      if (!val2020 || !val2023) {
+        alert('Please enter both your 2020 and 2023 home values');
+        return;
+      }
+
+      const rate2020 = rates[selectedArea][2020];
+      const rate2023 = rates[selectedArea][2023];
+
+      const assessedValue2020 = val2020 * ASSESSMENT_RATE;
+      const assessedValue2023 = val2023 * ASSESSMENT_RATE;
+
+      const tax2020 = (assessedValue2020 * rate2020 / 1000);
+      const tax2023 = (assessedValue2023 * rate2023 / 1000);
+      
+      const monthly2020 = tax2020 / 12;
+      const monthly2023 = tax2023 / 12;
+      const monthlyChange = monthly2023 - monthly2020;
+
+      const valueChange = ((val2023 - val2020) / val2020 * 100);
+      const rateChange = ((rate2023 - rate2020) / rate2020 * 100);
+
+      setResults({
+        value2020: val2020,
+        value2023: val2023,
+        assessedValue2020,
+        assessedValue2023,
+        tax2020,
+        tax2023,
+        monthly2020,
+        monthly2023,
+        monthlyChange,
+        valueChange,
+        rateChange
+      });
+    };
+
+    return (
+      <div className="calculator">
+        <h2>Calculate Your Change:</h2>
+        
+        <div className="form-group">
+          <label>1. Pick your area's tax rate:</label>
+          <select 
+            value={selectedArea}
+            onChange={(e) => setSelectedArea(e.target.value)}
+          >
+            {Object.entries(rates).map(([key, value]) => (
+              <option key={key} value={key}>{value.name}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>2. Your Home's 2020 Value:</label>
+          <input
+            type="number"
+            value={value2020}
+            onChange={(e) => setValue2020(e.target.value)}
+            placeholder="Enter your 2020 home value"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>3. Your Home's 2023 Value:</label>
+          <input
+            type="number"
+            value={value2023}
+            onChange={(e) => setValue2023(e.target.value)}
+            placeholder="Enter your 2023 home value"
+          />
+        </div>
+
+        <button className="btn" onClick={calculateTax}>
+          Show Me What Happened
+        </button>
+
+        {results && (
+          <div className="results">
+            <h3>Here's What Changed:</h3>
+            <div className="rate-info">
+              <h4>2020 Breakdown:</h4>
+              <div>
+                Appraised Value: ${results.value2020.toLocaleString()}<br/>
+                Assessed Value (11.5%): ${results.assessedValue2020.toLocaleString()}<br/>
+                Annual Tax: ${results.tax2020.toLocaleString()}<br/>
+                Monthly Payment: ${results.monthly2020.toFixed(2)}
+              </div>
+            </div>
+            
+            <div className="rate-info">
+              <h4>2023 Breakdown:</h4>
+              <div>
+                Appraised Value: ${results.value2023.toLocaleString()}<br/>
+                Assessed Value (11.5%): ${results.assessedValue2023.toLocaleString()}<br/>
+                Annual Tax: ${results.tax2023.toLocaleString()}<br/>
+                Monthly Payment: ${results.monthly2023.toFixed(2)}
+              </div>
+            </div>
+
+            <div className="change-summary">
+              <strong>What Changed:</strong><br/>
+              Home Value: {results.valueChange.toFixed(1)}%<br/>
+              Mill Levy Rate: {results.rateChange.toFixed(2)}%<br/>
+              Monthly Payment Change: ${Math.abs(results.monthlyChange).toFixed(2)}
+              {results.monthlyChange > 0 ? ' increase' : ' decrease'}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // Render the React component
+  const root = ReactDOM.createRoot(document.getElementById('react-calculator'));
+  root.render(<TaxCalculator />);
+</script>
 </body>
+  <!-- Add this after your existing container div -->
+<div id="react-calculator"></div>
 </html>
