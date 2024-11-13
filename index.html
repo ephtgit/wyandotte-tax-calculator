@@ -695,14 +695,32 @@
 
             <script>
                 const taxRates = {
-                    'kck500': { 2020: 167.544406, 2023: 164.438579, name: 'Kansas City KS (USD 500)' },
-                    'kck202': { 2020: 173.761361, 2023: 170.733416, name: 'Kansas City KS (USD 202)' },
-                    'kck203': { 2020: 170.061285, 2023: 166.270000, name: 'Kansas City KS (USD 203)' },
-                    'kck204': { 2020: 167.492878, 2023: 164.853259, name: 'Kansas City KS (USD 204)' },
-                    'bonner': { 2020: 167.492878, 2023: 158.340104, name: 'Bonner Springs' },
-                    'edwardsville': { 2020: 178.592377, 2023: 164.853259, name: 'Edwardsville' },
-                    'lakequivira': { 2020: 152.518099, 2023: 151.692548, name: 'Lake Quivira' }
-                };
+    'kck500': { 
+        2020: {
+            total: 167.544406,
+            breakdown: {
+                state: 1.500000,
+                county: 39.327324,
+                township: 38.470262,
+                school: 49.651909,
+                college: 27.425977,
+                library: 11.168934
+            }
+        },
+        2023: {
+            total: 164.438579,
+            breakdown: {
+                state: 1.500000,
+                county: 37.313168,
+                city: 38.459533,
+                school: 49.636282,
+                college: 26.364746,
+                library: 11.164850
+            }
+        },
+        name: 'Kansas City KS (USD 500)'
+    }
+};
 
                 function updateTaxInfo() {
                     const area = document.getElementById('taxArea').value;
