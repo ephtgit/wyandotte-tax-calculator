@@ -188,6 +188,10 @@
     </div>
 
     <div class="big-message">
+      <div class="highlight-box" style="background: #dbeafe;">
+  <strong>Important:</strong> In Kansas, homes are taxed at 11.5% of their value<br>
+  For example, a $200,000 home is taxed on $23,000 (11.5% of its value)
+</div>
       The Key Thing to Know:
       <span>Home Values Went Up 46%</span>
       While Tax Rates Actually Went DOWN 1.85%
@@ -268,6 +272,8 @@
     </div>
   </div>
   <script>
+    const ASSESSMENT_RATE = 0.115; // Kansas residential assessment rate is 11.5%
+
     const rates = {
       'kck500': { 2020: 167.544406, 2023: 164.438579, name: 'Kansas City KS (USD 500)' },
       'kck202': { 2020: 173.761361, 2023: 170.733416, name: 'Kansas City KS (USD 202)' },
@@ -303,8 +309,13 @@
       const rate2020 = rates[area][2020];
       const rate2023 = rates[area][2023];
 
-      const tax2020 = (value2020 * rate2020 / 1000).toFixed(2);
-      const tax2023 = (value2023 * rate2023 / 1000).toFixed(2);
+      // Calculate assessed values (11.5% of appraised value)
+      const assessedValue2020 = value2020 * ASSESSMENT_RATE;
+      const assessedValue2023 = value2023 * ASSESSMENT_RATE;
+
+      // Calculate taxes using assessed values
+      const tax2020 = (assessedValue2020 * rate2020 / 1000).toFixed(2);
+      const tax2023 = (assessedValue2023 * rate2023 / 1000).toFixed(2);
       
       const monthly2020 = (parseFloat(tax2020) / 12).toFixed(2);
       const monthly2023 = (parseFloat(tax2023) / 12).toFixed(2);
@@ -322,17 +333,30 @@
         <p style="font-size: 1.2em; margin-bottom: 20px;">
           <strong>Your tax bill changed because:</strong>
         </p>
-        <p style="font-size: 1.1em; color: #2b6cb0;">
-          1. Your home's value went ${valueChange > 0 ? 'UP' : 'DOWN'} by ${Math.abs(valueChange)}%
-          <br>
-          <span style="font-size: 0.9em; color: #4a5568;">From $${value2020.toLocaleString()} to $${value2023.toLocaleString()}</span>
-        </p>
-        <p style="font-size: 1.1em; color: #2b6cb0;">
-          2. While your tax rate went ${rateChange < 0 ? 'DOWN' : 'UP'} by ${Math.abs(rateChange)}%
-        </p>
+        <div class="rate-info" style="margin-bottom: 20px;">
+          <h4 style="font-weight: 600; margin-bottom: 10px;">2020 Breakdown:</h4>
+          <div style="padding-left: 15px;">
+            Appraised Value: $${value2020.toLocaleString()}<br>
+            <span style="color: #2b6cb0;">Assessed Value (11.5%): $${assessedValue2020.toLocaleString()}</span><br>
+            Annual Tax: $${parseFloat(tax2020).toLocaleString()}<br>
+            Monthly Payment: $${monthly2020}
+          </div>
+        </div>
+        <div class="rate-info" style="margin-bottom: 20px;">
+          <h4 style="font-weight: 600; margin-bottom: 10px;">2023 Breakdown:</h4>
+          <div style="padding-left: 15px;">
+            Appraised Value: $${value2023.toLocaleString()}<br>
+            <span style="color: #2b6cb0;">Assessed Value (11.5%): $${assessedValue2023.toLocaleString()}</span><br>
+            Annual Tax: $${parseFloat(tax2023).toLocaleString()}<br>
+            Monthly Payment: $${monthly2023}
+          </div>
+        </div>
         <div style="background: #e2e8f0; padding: 15px; border-radius: 8px; margin-top: 20px;">
-          <p style="font-size: 1.2em; margin: 0;">
-            <strong>Result: Your tax bill changed from $${parseFloat(tax2020).toLocaleString()} to $${parseFloat(tax2023).toLocaleString()}</strong>
+          <p style="font-size: 1.1em; margin: 0;">
+            <strong>What Changed:</strong><br>
+            Home Value: ${valueChange}% ${valueChange > 0 ? '↑' : '↓'}<br>
+            Mill Levy Rate: ${rateChange}% ${rateChange > 0 ? '↑' : '↓'}<br>
+            Monthly Payment Change: ${monthlyChange > 0 ? '+' : ''}$${Math.abs(monthlyChange)}
           </p>
         </div>
       `;
